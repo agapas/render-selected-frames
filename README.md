@@ -3,10 +3,9 @@ Simple addon for blender 3d to render selected frames. It works with compositor.
 
 ### More info
 
-<img src="https://raw.githubusercontent.com/agapas/render-selected-frames/master/images/1.png" width="850" height="450"/>
+Input frames can be set like in example: '2,5-8,13,14-16',<br/>so in this case following frames will be rendered: 2, 5, 6, 7, 8, 13, 14, 15, 16.
 
-Input frames can be set like in example: '2,5-8,13,14-16',
-so in this case following frames will be rendered: 2, 5, 6, 7, 8, 13, 14, 15, 16.
+<img src="https://raw.githubusercontent.com/agapas/render-selected-frames/master/images/1.png" width="310" height="330"/>
 
 *A note:* please don't use spaces between input frames, just commas.
 
