@@ -9,7 +9,7 @@ If you need version for Blender 2.79 or older, check the link: [render-selected-
 
 Input frames can be set like in example: '1,3-5,10,7',<br/>so in this case following frames will be rendered: 1, 3, 4, 5, 7, 10.
 
-<img src="https://raw.githubusercontent.com/agapas/render-selected-frames/master/images/1.png" width="340" height="695"/>
+<img src="https://raw.githubusercontent.com/agapas/render-selected-frames/master/images/ui.png" width="340" height="695"/>
 
 *Notes:*
 * frames order is not important
@@ -18,10 +18,10 @@ Input frames can be set like in example: '1,3-5,10,7',<br/>so in this case follo
 
 ### Installing
 
-* go to: File/User Preferences/Add-ons and click 'Install Add-on from File...'
-* select the ZIP you downloaded and click 'Install Add-on from File...'
+* go to: Edit/Preferences/Add-ons and click 'Install Add-on'
+* select the ZIP you downloaded and click button 'Install Add-on'
 * enable the addon
-* save user settings to keep addon enabled over multiple blender sessions
+* save preferences to keep addon enabled over multiple blender sessions
 
 ## License
 
