@@ -16,14 +16,13 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# <pep8-80 compliant>
 
 bl_info = {
     "name": "Render Selected Frames",
     "author": "Agnieszka Pas",
-    "version": (1, 1, 0),
-    "blender": (2, 79, 0),
-    "location": "Properties > Render",
+    "version": (2, 0, 0),
+    "blender": (2, 81, 0),
+    "location": "Properties > Window > Render",
     "warning": "",
     "description": "Render Selected Frames",
     "category": "Render",
@@ -31,12 +30,18 @@ bl_info = {
 
 
 import bpy
-from bpy.types import Operator
 
 
-class RenderSelectedFramesOperator(Operator):
+class RenderSelectedFrames(bpy.types.PropertyGroup):
+    selected_frames: bpy.props.StringProperty(
+        name="Frames",
+        default="",
+        description="Frames to render, for example: 1,3-5,8")
+
+
+class RENDER_SELECTED_FRAMES_OT_operator(bpy.types.Operator):
     """Render Selected Frames"""
-    bl_idname = "render.render_frames"
+    bl_idname = "rsf_ot.render_frames"
     bl_label = "Render Frames"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -44,14 +49,16 @@ class RenderSelectedFramesOperator(Operator):
         scene = context.scene
         path = scene.render.filepath
         scene.render.image_settings.file_format = 'PNG'
-        frames_string = scene.NewSelectedFrames
+
+        rsf = scene.render_selected_frames
+        selected_frames = rsf.selected_frames
         frames_list = []
 
-        if frames_string == '':
+        if selected_frames == '':
             self.report({'WARNING'}, "Choose frames to render first")
             return {'CANCELLED'}
         else:
-            splitted = frames_string.split(',')
+            splitted = selected_frames.split(',')
             for s in splitted:
                 if s.find('-') > -1:
                     range_ends = s.split('-')
@@ -75,30 +82,50 @@ class RenderSelectedFramesOperator(Operator):
             return {'FINISHED'}
 
 
-def draw_render_frames(self, context):
-    layout = self.layout
-    col = layout.column()
+class RENDER_SELECTED_FRAMES_PT_panel(bpy.types.Panel):
+    bl_idname = "RENDER_SELECTED_FRAMES_PT_panel"
+    bl_label = "Render Selected Frames"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "render"
+    bl_order = 101
+    bl_options = {'DEFAULT_CLOSED'}
+    COMPAT_ENGINES = {'CYCLES'}
 
-    row = col.row()
-    row.label("Selected Frames:")
-    col.prop(context.scene, "NewSelectedFrames", text="")
-    col.operator("render.render_frames")
+
+    @classmethod
+    def poll(cls, context):
+        return context.scene
+
+    
+    def draw(self, context):
+        scene = context.scene
+        rsf = scene.render_selected_frames
+
+        layout = self.layout
+        col = layout.column()
+
+        row = col.row()
+        row.label(text="Frames:")
+        col.prop(rsf, "selected_frames", text="")
+        col.operator("rsf_ot.render_frames", text="Render Frames")
+
+
+classes = (
+    RenderSelectedFrames,
+    RENDER_SELECTED_FRAMES_OT_operator,
+    RENDER_SELECTED_FRAMES_PT_panel,
+    )
 
 
 def register():
-    bpy.types.Scene.NewSelectedFrames = bpy.props.StringProperty(
-        name="Frames",
-        default="",
-        description="Frames to render, for example: 1,3-5,8")
-    bpy.utils.register_module(__name__)
-    bpy.types.RENDER_PT_render.append(draw_render_frames)
+    for c in classes:
+        bpy.utils.register_class(c)
+    
+    bpy.types.Scene.render_selected_frames = bpy.props.PointerProperty(type=RenderSelectedFrames)
 
 
 def unregister():
-    del bpy.types.Scene.NewSelectedFrames
-    bpy.types.RENDER_PT_render.remove(draw_render_frames)
-    bpy.utils.unregister_module(__name__)
-
-
-if __name__ == "__main__":
-    register()
+    del bpy.types.Scene.render_selected_frames
+    for c in classes:
+        bpy.utils.unregister_class(c)
