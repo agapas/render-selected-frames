@@ -7,14 +7,18 @@ If you need version for Blender 2.79 or older, check the link: [render-selected-
 
 ### More info
 
-Input frames can be set like in example: '1,3-5,10,7',<br/>so in this case following frames will be rendered: 1, 3, 4, 5, 7, 10.
+Input frames can be set like in example: '1,3-5,10,7', so in this case following frames will be rendered: 1, 3, 4, 5, 7, 10.
 
 <img src="https://raw.githubusercontent.com/agapas/render-selected-frames/master/images/ui.png" width="340" height="695"/>
 
-*Notes:*
+### Notes and practical advices:
+
 * frames order is not important
-* please don't use spaces between input frames, just commas
-* toggle system console to see addon's raport with output paths and rendering and saving times
+* do not set too many frames to render at once (it can be time and memory consuming)
+* after pressing "Render Frames" button please wait a little bit for the addon to start
+* use "Esc" (keyboard button) to stop rendering on the current frame
+* toggle system console (after render is finished) to see addon's raport with output paths, rendering times and saving times
+* you can open the output folder to see the progress during rendering
 
 ### Installing
 
@@ -22,6 +26,14 @@ Input frames can be set like in example: '1,3-5,10,7',<br/>so in this case follo
 * select the ZIP you downloaded and click button 'Install Add-on'
 * enable the addon
 * save preferences to keep addon enabled over multiple blender sessions
+
+#### Installation note:
+
+If the steps above don't work, try:
+  * download just the "render_selected_frames.py" file<br/>
+  * and save it into addons directory in your Blender path, for example into:<br/>
+    C:\Program Files\Blender Foundation\Blender 2.82\2.82\scripts\addons
+  * enable the addon in Blender's Edit/Preferences/Add-ons
 
 ## License
 
